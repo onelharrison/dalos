@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 
+class LinkedListNode(ABC):
+    def __init__(self, data):
+        self.data = data
+
 class LinkedList(ABC):
     def __init__(self):
         self.head = None
@@ -32,9 +36,10 @@ class LinkedList(ABC):
     def __len__(self):
         return self.size
 
-class LinkedListNode(ABC):
-    def __init__(self, data):
-        self.data = data
+class SinglyLinkedListNode(LinkedListNode):
+    def __init__(self, data=None):
+        super().__init__(data)
+        self.next_node = None
 
 class SinglyLinkedList(LinkedList):
     def __init__(self):
@@ -54,23 +59,30 @@ class SinglyLinkedList(LinkedList):
     def pop(self, index=None):
         super().pop(index)
 
-        pos = self.size - 2 if index is None else index - 1
+        dummy_head = SinglyLinkedListNode()
+        dummy_head.next_node = self.head
 
-        current_node = self.head
-        for _ in range(pos):
+        pop_location = self.size - 1 if index is None else index
+
+        current_node = dummy_head
+        for _ in range(pop_location):
             current_node = current_node.next_node
 
-        if current_node is self.head:
-            self.head = current_node.next_node
-        else:
-            current_node.next_node = current_node.next_node.next_node
+        popped_node = current_node.next_node
+        current_node.next_node = current_node.next_node.next_node
 
-        current_node = None if self.size == 1 else current_node
+        if pop_location == 0:
+            current_node = current_node.next_node
+            self.head = current_node
 
-        if index is None or index == self.size - 1:
+        if pop_location == self.size - 1:
             self.tail = current_node
 
         self.size -= 1
+
+        popped_node.next_node = None
+
+        return popped_node
 
     def delete(self, data):
         return
@@ -81,9 +93,10 @@ class SinglyLinkedList(LinkedList):
     def insert_at(self, data, pos):
         return 
 
-class SinglyLinkedListNode(LinkedListNode):
+class DoublyLinkedListNode(LinkedListNode):
     def __init__(self, data=None):
         super().__init__(data)
+        self.prev_node = None
         self.next_node = None
 
 class DoublyLinkedList(LinkedList):
@@ -105,27 +118,36 @@ class DoublyLinkedList(LinkedList):
     def pop(self, index=None):
         super().pop(index)
 
-        pos = self.size - 1 if index is None else index
+        dummy_head = DoublyLinkedListNode()
+        dummy_head.next_node = self.head
 
-        current_node = self.head
-        for _ in range(pos - 1):
+        pop_location = self.size - 1 if index is None else index
+
+        current_node = dummy_head
+        for _ in range(pop_location):
             current_node = current_node.next_node
 
-        if current_node is self.head:
-            self.head = current_node.next_node
-            if self.head is not None:
-                self.head.prev_node = None
-        else:
-            current_node.next_node = current_node.next_node.next_node
-            if current_node.next_node is not None:
-                current_node.next_node.prev_node = current_node
+        popped_node = current_node.next_node
+        current_node.next_node = current_node.next_node.next_node
 
-        current_node = None if self.size == 1 else current_node
+        if current_node.next_node:
+            current_node.next_node.prev_node = current_node
 
-        if index is None or index == self.size - 1:
+        if pop_location == 0:
+            current_node = current_node.next_node
+            if current_node:
+                current_node.prev_node = None
+            self.head = current_node
+
+        if pop_location == self.size - 1:
             self.tail = current_node
 
         self.size -= 1
+
+        popped_node.prev_node = None
+        popped_node.next_node = None
+
+        return popped_node
 
     def delete(self, data):
         return
@@ -139,8 +161,3 @@ class DoublyLinkedList(LinkedList):
     def prepend(self, data):
         return
 
-class DoublyLinkedListNode(LinkedListNode):
-    def __init__(self, data=None):
-        super().__init__(data)
-        self.prev_node = None
-        self.next_node = None

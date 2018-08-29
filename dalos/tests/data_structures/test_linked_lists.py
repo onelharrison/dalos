@@ -73,6 +73,17 @@ class TestSinglyLinkedList(unittest.TestCase):
 
         self.assertEqual(2, len(self.singly_linked_list))
         self.assertEqual(43, self.singly_linked_list.tail.data)
+
+    def test_pop_returns_popped_node_with_next_node_none(self):
+        self.singly_linked_list.append(42)
+        self.singly_linked_list.append(43)
+        self.singly_linked_list.append(44)
+
+        popped_node = self.singly_linked_list.pop(1)
+
+        self.assertEqual(2, len(self.singly_linked_list))
+        self.assertEqual(43, popped_node.data)
+        self.assertIsNone(popped_node.next_node)
          
 class TestDoublyLinkedList(unittest.TestCase):
     def setUp(self):
@@ -136,6 +147,7 @@ class TestDoublyLinkedList(unittest.TestCase):
         self.doubly_linked_list.pop(1)
 
         self.assertEqual(2, len(self.doubly_linked_list))
+        self.assertEqual(42, self.doubly_linked_list.head.data)
         self.assertEqual(44, self.doubly_linked_list.tail.data)
         self.assertIs(self.doubly_linked_list.head.next_node, self.doubly_linked_list.tail)
         self.assertIs(self.doubly_linked_list.head, self.doubly_linked_list.tail.prev_node)
@@ -159,6 +171,18 @@ class TestDoublyLinkedList(unittest.TestCase):
         self.assertEqual(2, len(self.doubly_linked_list))
         self.assertEqual(43, self.doubly_linked_list.tail.data)
         self.assertIsNone(self.doubly_linked_list.tail.next_node)
+
+    def test_pop_returns_popped_node_with_prev_and_next_node_none(self):
+        self.doubly_linked_list.append(42)
+        self.doubly_linked_list.append(43)
+        self.doubly_linked_list.append(44)
+
+        popped_node = self.doubly_linked_list.pop(1)
+
+        self.assertEqual(2, len(self.doubly_linked_list))
+        self.assertEqual(43, popped_node.data)
+        self.assertIsNone(popped_node.prev_node)
+        self.assertIsNone(popped_node.next_node)
 
 if __name__ == '__main__':
     unittest.main()
