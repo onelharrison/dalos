@@ -30,7 +30,7 @@ class LinkedList(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def insert_at(self, data, pos):
+    def insert(self, index, data):
         raise NotImplementedError
 
     def __len__(self):
@@ -84,14 +84,32 @@ class SinglyLinkedList(LinkedList):
 
         return popped_node
 
+    def insert(self, index, data):
+        insert_location = index if index <= self.size else self.size
+
+        current_node = self.head
+        for _ in range(insert_location):
+            current_node = current_node.next_node
+
+        insert_node = SinglyLinkedListNode(data)
+
+        if insert_location == 0:
+            self.head = insert_node
+
+        if insert_location == self.size:
+            self.tail = insert_node
+
+        if current_node:
+            insert_node.next_node = current_node.next_node
+            current_node.next_node = insert_node
+
+        self.size += 1
+
     def delete(self, data):
         return
 
     def find(self, data):
         return
-
-    def insert_at(self, data, pos):
-        return 
 
 class DoublyLinkedListNode(LinkedListNode):
     def __init__(self, data=None):
@@ -155,9 +173,6 @@ class DoublyLinkedList(LinkedList):
     def find(self, data):
         return
 
-    def insert_at(self, data, pos):
-        return
-
-    def prepend(self, data):
+    def insert(self, index, data):
         return
 

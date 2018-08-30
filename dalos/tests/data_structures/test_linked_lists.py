@@ -84,6 +84,47 @@ class TestSinglyLinkedList(unittest.TestCase):
         self.assertEqual(2, len(self.singly_linked_list))
         self.assertEqual(43, popped_node.data)
         self.assertIsNone(popped_node.next_node)
+
+    def test_insert_when_list_is_empty_and_index_is_zero(self):
+        self.singly_linked_list.insert(0, 42)
+
+        self.assertEqual(1, len(self.singly_linked_list))
+        self.assertIs(self.singly_linked_list.head, self.singly_linked_list.tail)
+
+    def test_insert_when_list_is_size_one_and_index_is_one(self):
+        self.singly_linked_list.append(42)
+
+        self.singly_linked_list.insert(1, 43)
+
+        self.assertEqual(2, len(self.singly_linked_list))
+        self.assertIs(43, self.singly_linked_list.tail.data)
+
+    def test_insert_when_index_is_greater_than_list_size(self):
+        self.singly_linked_list.append(42)
+        self.singly_linked_list.append(43)
+        self.singly_linked_list.append(44)
+
+        self.singly_linked_list.insert(5, 45)
+
+        self.assertEqual(4, len(self.singly_linked_list))
+        self.assertEqual(45, self.singly_linked_list.tail.data)
+
+    def test_insert_when_index_is_between_other_nodes(self):
+        self.singly_linked_list.append(42)
+        self.singly_linked_list.append(44)
+        self.singly_linked_list.append(45)
+
+        insert_location = 1
+        self.singly_linked_list.insert(insert_location, 43)
+
+        self.assertEqual(4, len(self.singly_linked_list))
+
+        node_before_inserted_node = self.singly_linked_list.head
+        for _ in range(insert_location):
+            node_before_inserted_node = node_before_inserted_node.next_node
+
+        self.assertEqual(43, node_before_inserted_node.next_node.data)
+        self.assertEqual(45, node_before_inserted_node.next_node.next_node.data)
          
 class TestDoublyLinkedList(unittest.TestCase):
     def setUp(self):
