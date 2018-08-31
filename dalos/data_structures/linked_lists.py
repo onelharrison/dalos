@@ -21,9 +21,9 @@ class LinkedList(ABC):
         if index and index > self.size - 1:
             raise IndexError('pop index out of range')
 
-    @abstractmethod
-    def delete(self, data):
-        raise NotImplementedError
+    def remove(self, data):
+        if self.size == 0:
+            raise ValueError('list.remove(x): x not in list')
 
     @abstractmethod
     def find(self, data):
@@ -85,7 +85,7 @@ class SinglyLinkedList(LinkedList):
         return popped_node
 
     def insert(self, index, data):
-        insert_location = index if index <= self.size else self.size
+        insert_location = abs(index) if index < self.size else self.size
 
         current_node = self.head
         for _ in range(insert_location):
@@ -105,8 +105,8 @@ class SinglyLinkedList(LinkedList):
 
         self.size += 1
 
-    def delete(self, data):
-        return
+    def remove(self, data):
+        super().remove(data)
 
     def find(self, data):
        current_node = self.head 
@@ -171,7 +171,7 @@ class DoublyLinkedList(LinkedList):
 
         return popped_node
 
-    def delete(self, data):
+    def remove(self, data):
         return
 
     def find(self, data):
