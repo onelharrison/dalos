@@ -109,7 +109,11 @@ class SinglyLinkedList(LinkedList):
         return
 
     def find(self, data):
-        return
+       current_node = self.head 
+       while current_node and current_node.data != data:
+           current_node = current_node.next_node
+
+       return current_node
 
 class DoublyLinkedListNode(LinkedListNode):
     def __init__(self, data=None):

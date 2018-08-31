@@ -125,7 +125,29 @@ class TestSinglyLinkedList(unittest.TestCase):
 
         self.assertEqual(43, node_before_inserted_node.next_node.data)
         self.assertEqual(45, node_before_inserted_node.next_node.next_node.data)
+
+    def test_find_when_given_data_is_in_list(self):
+        self.singly_linked_list.append(42)
+        self.singly_linked_list.append(45)
+        self.singly_linked_list.append(44)
+        self.singly_linked_list.append(45)
+
+        node = self.singly_linked_list.find(45)
+        self.assertEqual(45, node.data)
+        self.assertIsNot(node, self.singly_linked_list.tail)
          
+    def test_find_when_given_data_is_not_in_list(self):
+        self.singly_linked_list.append(42)
+        self.singly_linked_list.append(43)
+        self.singly_linked_list.append(44)
+
+        node = self.singly_linked_list.find(45)
+        self.assertIsNone(node)
+
+    def test_find_when_list_is_empty(self):
+        node = self.singly_linked_list.find(20)
+        self.assertIsNone(node)
+
 class TestDoublyLinkedList(unittest.TestCase):
     def setUp(self):
         self.doubly_linked_list = DoublyLinkedList()
